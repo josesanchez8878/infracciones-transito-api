@@ -9,6 +9,6 @@ public interface IInfractorService {
     InfractorResponseDTO obtenerInfractorPorId(Long id);
     List<InfractorResponseDTO> obtenerTodos();
     void asignarVehiculo(Long infractorId, Long vehiculoId);
-    void verificarBloqueo(Long infractorId);
+    void verificarBloqueo(Long id);
 
 }

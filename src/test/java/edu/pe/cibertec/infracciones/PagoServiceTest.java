@@ -29,7 +29,6 @@ class PagoServiceTest {
     @InjectMocks
     private PagoServiceImpl pagoService;
 
-    // Pregunta 3
     @Test
     void procesarPago_mismodiaDEmision_aplicaDescuento20() {
         Multa multa = new Multa();
@@ -48,7 +47,6 @@ class PagoServiceTest {
         assertEquals(EstadoMulta.PAGADA, multa.getEstado());
     }
 
-    // Pregunta 4
     @Test
     void procesarPago_multaVencida_aplicaRecargo15() {
         Multa multa = new Multa();

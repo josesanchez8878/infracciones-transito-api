@@ -72,13 +72,13 @@ public class InfractorServiceImpl implements IInfractorService {
         return dto;
     }
     @Override
-    public void verificarBloqueo(Long infractorId) {
-        Infractor infractor = infractorRepository.findById(infractorId)
-                .orElseThrow(() -> new InfractorNotFoundException(infractorId));
-        List<Multa> vencidas = multaRepository.findByInfractor_IdAndEstado(infractorId, EstadoMulta.VENCIDA);
-        if (vencidas.size() >= 3) {
-            infractor.setBloqueado(true);
-            infractorRepository.save(infractor);
+    public void verificarBloqueo(Long id) {
+        Infractor i = infractorRepository.findById(id)
+                .orElseThrow(() -> new InfractorNotFoundException(id));
+        List<Multa> lista = multaRepository.findByInfractor_IdAndEstado(id, EstadoMulta.VENCIDA);
+        if (lista.size() >= 3) {
+            i.setBloqueado(true);
+            infractorRepository.save(i);
         }
     }
 }
