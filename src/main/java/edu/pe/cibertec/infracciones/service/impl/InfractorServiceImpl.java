@@ -12,6 +12,9 @@ import edu.pe.cibertec.infracciones.service.IInfractorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import edu.pe.cibertec.infracciones.model.EstadoMulta;
+import edu.pe.cibertec.infracciones.model.Multa;
+import edu.pe.cibertec.infracciones.repository.MultaRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class InfractorServiceImpl implements IInfractorService {
 
     private final InfractorRepository infractorRepository;
     private final VehiculoRepository vehiculoRepository;
+    private final MultaRepository multaRepository;
 
     @Override
     public InfractorResponseDTO registrarInfractor(InfractorRequestDTO dto) {
@@ -66,5 +70,15 @@ public class InfractorServiceImpl implements IInfractorService {
         dto.setEmail(infractor.getEmail());
         dto.setBloqueado(infractor.isBloqueado());
         return dto;
+    }
+    @Override
+    public void verificarBloqueo(Long infractorId) {
+        Infractor infractor = infractorRepository.findById(infractorId)
+                .orElseThrow(() -> new InfractorNotFoundException(infractorId));
+        List<Multa> vencidas = multaRepository.findByInfractor_IdAndEstado(infractorId, EstadoMulta.VENCIDA);
+        if (vencidas.size() >= 3) {
+            infractor.setBloqueado(true);
+            infractorRepository.save(infractor);
+        }
     }
 }
